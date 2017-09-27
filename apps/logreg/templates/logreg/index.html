@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>login/registration</title>
+</head>
+<body>
+	{% if messages %}
+		<ul>
+			{% for message in messages %}
+				<li>{{ message }}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+
+	<h2>Register</h2>
+	<form action="{% url 'register' %}" method="post">
+		{% csrf_token %}
+		<p><label>Name:</label>
+		<input type="text" name="name"></p>
+
+		<p><label>Username:</label>
+		<input type="text" name="username"></p>
+		<h6>*password should be at least 8 characters</h6>
+		<p><label>Password:</label>
+		<input type="Password" name="password"></p>
+
+		<p><label>Password Confirmation:</label>
+		<input type="password" name="password_confirmation"></p>
+
+		<p><input type="submit" name="reg" value="Register"></p>
+	</form>
+
+	<h2>Login</h2>
+	<form action="{% url 'login' %}" method="post">
+		{% csrf_token %}
+		<p><label>Username:</label>
+		<input type="text" name="username"></p>
+
+		<p><label>Password:</label>
+		<input type="password" name="password"></p>
+
+		<p><input type="submit" name="log" value="Login"></p>
+	</form>
+
+</body>
+</html>

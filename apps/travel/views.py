@@ -2,39 +2,46 @@
 from __future__ import unicode_literals
 from django.contrib import messages
 from django.shortcuts import render, redirect, reverse
-from ..logreg.models import *
-from .models import *
+from ..logreg.models import User
+from .models import Travel
 
 def flash_messages(request, errors):
 	for error in errors:
 		messages.error(request,error)
-
+	return errors
 def home(request):
-	user = User.objects.get(id = request.session['user_id'])
-	# my_travel = User.travels.all()
-	# other_travel = User.objects.exclude(id__in=my_travel).exclude(id=user.id)
 	if 'user_id' in request.session:
 		user = User.objects.get(id = request.session['user_id'])
-		users = User.objects.all()
+		my_trips = user.travel_plans.all()
+		other_trips = Travel.objects.exclude(plans__id=user.id)
 		context = {
+			# 'travel': Travel.objects.all(),
 			'user': user,
-			'users': users,
-			# 'my_travel': my_travel,
-			# 'other_travel': other_travel 
+			'my_trips': my_trips,
+			'other_trips': other_trips
 		}
 		return render(request, 'travel/home.html', context)
 
-def show(request, travel_id):
+def show(request, id):
+	travel = Travel.objects.get(id=id)
 	context = {
-		'travel': Travel.objects.get(id=travel_id),
+		'travel': Travel.objects.get(id=id),
+		'others': travel.plans.all()
 	}
 	return render(request, 'travel/show.html', context)
 
+def add_trip(request, id):
+	user = User.objects.get(id = request.session['user_id'])
+	travel = Travel.objects.get(id=id)
+
+	travel.plans.add(user)
+
+	return redirect(reverse('home'))
+
 def add(request):
 	if 'user_id' in request.session:
-		user = User.objects.get(id = request.session['user_id'])
 
-	return render(request, 'travel/add.html')
+		return render(request, 'travel/add.html')
 
 def create(request):
 	errors = Travel.objects.validate_travel(request.POST)
@@ -42,7 +49,7 @@ def create(request):
 		flash_messages(request, errors)
 		return redirect(reverse('new_travel'))
 	else:
-		travel = Travel.objects.create_travel(request.POST)
+		travel = Travel.objects.create_travel(request.POST, request.session['user_id'])
 	return redirect(reverse('home'))
 
 

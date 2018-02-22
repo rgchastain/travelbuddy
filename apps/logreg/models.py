@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from ..travel.models import Travel
 from django.db import models
 import bcrypt
 
@@ -48,7 +47,6 @@ class User(models.Model):
 	name = models.CharField(max_length = 50)
 	username = models.CharField(max_length = 50)
 	password = models.CharField(max_length = 50)
-	travel_plans = models.ManyToManyField(Travel, related_name="users")
 	created_at = models.DateTimeField(auto_now_add = True)
 	updated_at = models.DateTimeField(auto_now = True)
 

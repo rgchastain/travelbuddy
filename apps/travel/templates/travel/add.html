@@ -14,7 +14,7 @@
             {% endfor %}
         </ul>
         {% endif %}
-	<form action="{% url 'create_travel' %}" method="post">
+	<form action="{% url 'create' %}" method="post">
 		{% csrf_token %}
 		<p>
 		<label>Destination:</label>

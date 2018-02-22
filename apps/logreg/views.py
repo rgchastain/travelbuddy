@@ -40,7 +40,7 @@ def login(request):
 		if type(result) == list:
 			for error in result:
 				messages.error(request, error)
-			return redirect(reverse('home'))
+			return redirect(reverse('landing'))
 		request.session['user_id'] = result.id
 		
 		return redirect(reverse('home'))

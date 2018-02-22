@@ -23,18 +23,14 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% if travel %}
-				{% for travel in travel_plans %}
+				{% for trips in my_trips %}
 					<tr>
-						<td><a href="{% url 'show' %}">{{travel.destination}}</a></td>
-						<td>{{travel.travel_from}}</td>
-						<td>{{travel.travel_to}}</td>
-						<td>{{travel.description}}</td>
+						<td><a href="{% url 'show' id=trips.id %}">{{trips.destination}}</a></td>
+						<td>{{trips.travel_from}}</td>
+						<td>{{trips.travel_to}}</td>
+						<td>{{trips.description}}</td>
 					
 				{% endfor %}
-				{% else %}
-					<p>You have no destinations yet.</p>
-				{% endif %}
 				</tr>
 
 		</tbody>
@@ -52,19 +48,19 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for user in users %}
+			{% for trips in other_trips  %}
 				<tr>
-					<td>{{user.name}}</td>
-					<td>{{travel.destination}}</td>
-					<td>{{travel.travel_from}}</td>
-					<td>{{travel.travel_to}}</td>
-					<td><a href="">Join</a></td>
+					<td>{{trips.planned_by.name}}</td>
+					<td><a href="{% url 'show' id=trips.id %}">{{trips.destination}}</a></td>
+					<td>{{trips.travel_from}}</td>
+					<td>{{trips.travel_to}}</td>
+					<td><a href="{% url 'add_trip' id=trips.id %}">Join</a></td>
 				</tr>
 			{% endfor %}
 		</tbody>
 	</table>
 
-<p><a href="{% url 'new_travel' %}">Add Travel Plan</a></p>
+<p><a href="{% url 'add' %}">Add Travel Plan</a></p>
 
 </body>
 </html>
